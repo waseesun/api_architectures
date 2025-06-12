@@ -12,7 +12,7 @@ export const getProductsAction = async () => {
   try {
     const response = await getProducts();
     if (response.error) {
-      return { error: response.error };
+      return { "error": response.error };
     }
     return response;
   } catch (error) {
@@ -25,7 +25,7 @@ export const getProductAction = async (id) => {
   try {
     const response = await getProduct(id);
     if (response.error) {
-      return { error: response.error };
+      return { "error": response.error };
     }
     return response;
   } catch (error) {
@@ -38,7 +38,7 @@ export const createProductAction = async (data) => {
   try {
     const response = await createProduct(data);
     if (response.error) {
-      return { error: response.error };
+      return { "error": response.error };
     }
     return response;
   } catch (error) {
@@ -51,7 +51,7 @@ export const updateProductAction = async (id, data) => {
   try {
     const response = await updateProduct(id, data);
     if (response.error) {
-      return { error: response.error };
+      return { "error": response.error };
     }
     return response;
   } catch (error) {
@@ -64,9 +64,9 @@ export const deleteProductAction = async (id) => {
   try {
     const response = await deleteProduct(id);
     if (response.error) {
-      return { error: response.error };
+      return { "error": response.error };
     }
-    return response;
+    return { "success": "Product deleted successfully!" };
   } catch (error) {
     console.error("Error deleting product:", error);
     return { error: error.message || "Error deleting product" };
