@@ -1,0 +1,50 @@
+.message {
+  font-size: 1.1em;
+  margin-bottom: 25px;
+  text-align: center;
+  color: #555;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.deleteButton,
+.cancelButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.deleteButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.cancelButton:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

@@ -13,6 +13,10 @@ export class ApiClient {
       }
     }
 
+    if (response.status === 204) {
+      return {};
+    }
+
     if (response.status >= 400) {
       if (response.status === 401) {
         return {
