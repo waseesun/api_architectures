@@ -8,4 +8,5 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     renderer_classes = [ViewRenderer]
+    http_method_names = ["get", "post", "patch", "delete"]
     
