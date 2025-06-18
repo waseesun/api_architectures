@@ -38,6 +38,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "rest_api",
+    "webhooks",
     "rest_framework",
     "corsheaders",
     "django.contrib.admin",
@@ -148,3 +149,7 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # Nextjs
 ]
+
+
+# Webhook settings
+WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-webhook-secret')  # Add to .env
