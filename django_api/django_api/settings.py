@@ -39,6 +39,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "rest_api",
     "webhooks",
+    "real_time_api",
     "rest_framework",
     "corsheaders",
     "django.contrib.admin",
