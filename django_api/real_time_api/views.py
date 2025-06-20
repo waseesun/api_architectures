@@ -2,17 +2,15 @@
 Views for short and long polling, SSE (Server-Sent Events) and WebSockets.
 """
 import time
-import uuid
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django_api.renderers import ViewRenderer
-from django.utils import timezone
 from .models import Client, Message, ClientLastPoll
 from .serializers import MessageSerializer
 
 
-class SendMesssageView(APIView):
+class SendMessageView(APIView):
     """Send a message to a client."""
     renderer_classes = [ViewRenderer]
     
@@ -35,8 +33,8 @@ class SendMesssageView(APIView):
         message = Message.objects.create(client=client, content=content)
         serializer = MessageSerializer(message)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-    
+
+
 class PollMessagesView(APIView):
     """Short and long polling."""
     renderer_classes = [ViewRenderer]
@@ -73,7 +71,7 @@ class PollMessagesView(APIView):
                     serializer = MessageSerializer(new_messages, many=True)
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 
-                time.sleep(2)  # Wait for 2 seconds before checking again
+                time.sleep(1)  # Wait for 1 second before checking again
                 
             return Response([], status=status.HTTP_200_OK)
         

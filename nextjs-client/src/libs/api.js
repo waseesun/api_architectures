@@ -30,5 +30,5 @@ export const sendMessage = async (data) => {
 
 export const pollMessage = async (client_id, polling_type) => {
   const queryParams = new URLSearchParams({ client_id, polling_type }).toString();
-  return await realTimeApiClient.get(`/poll-message/?${queryParams}`);
+  return await realTimeApiClient.get(`/poll-messages/?${queryParams}`);
 }
