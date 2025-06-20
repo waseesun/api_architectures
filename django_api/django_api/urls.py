@@ -21,5 +21,6 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("django-rest-api/", include("rest_api.urls")),
-    path("django-webhooks/", include("payment_app.urls")),
+    path("django-webhooks/", include("webhooks.urls")),
+    path("django-real-time-api/", include("real_time_api.urls")),
 ]
