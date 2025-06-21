@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "rest_api",
     "webhooks",
     "real_time_api",
+    "channels",
+    "uvicorn",
     "rest_framework",
     "corsheaders",
     "django.contrib.admin",
@@ -154,4 +156,15 @@ CORS_ALLOWED_ORIGINS = [
 
 # Webhook settings
 # Set according to your environment
-WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-webhook-secret')  # Add to .env
+WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', 'your-webhook-secret')
+
+ASGI_APPLICATION = "django_api.asgi.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
