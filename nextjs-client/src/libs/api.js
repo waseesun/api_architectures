@@ -3,6 +3,7 @@ import { ApiClient } from "./apiClient";
 
 const restApiClient = new ApiClient("http://localhost:8000/django-rest-api");
 const realTimeApiClient = new ApiClient("http://localhost:8000/django-real-time-api");
+const webSocketApiClient = new ApiClient("http://localhost:8000");
 
 export const getProducts = async () => {
   return await restApiClient.get("/products/");
@@ -31,4 +32,14 @@ export const sendMessage = async (data) => {
 export const pollMessage = async (client_id, polling_type) => {
   const queryParams = new URLSearchParams({ client_id, polling_type }).toString();
   return await realTimeApiClient.get(`/poll-messages/?${queryParams}`);
+}
+
+export const streamMessages = (client_id, onMessageCallback, onErrorCallback, onOpenCallback) => {
+  const queryParams = new URLSearchParams({ client_id }).toString()
+  return realTimeApiClient.stream(`/sse-messages/?${queryParams}`, onMessageCallback, onErrorCallback, onOpenCallback)
+}
+
+export const connectChatWebSocket = (client_id, onMessageCallback, onCloseCallback, onErrorCallback) => {
+  const endpoint = `/ws/messages/${client_id}/`
+  return webSocketApiClient.connectWebSocket(endpoint, onMessageCallback, onCloseCallback, onErrorCallback)
 }

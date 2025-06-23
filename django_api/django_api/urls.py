@@ -16,11 +16,16 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from real_time_api import ws_consumer
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("django-rest-api/", include("rest_api.urls")),
     path("django-webhooks/", include("webhooks.urls")),
     path("django-real-time-api/", include("real_time_api.urls")),
+]
+
+websocket_urlpatterns = [
+    re_path(r'ws/messages/(?P<client_id>[0-9a-f-]+)/$', ws_consumer.WebSocketMessageConsumer.as_asgi()),
 ]

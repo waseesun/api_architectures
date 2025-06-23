@@ -1,7 +1,17 @@
+adrf==0.1.9
 asgiref==3.8.1
+async-property==0.2.2
+channels==4.2.2
+channels_redis==4.2.1
+click==8.2.1
 Django==5.2.3
 django-cors-headers==4.7.0
 djangorestframework==3.16.0
+h11==0.16.0
+msgpack==1.1.1
 psycopg2-binary==2.9.10
 python-dotenv==1.1.0
+redis==6.2.0
 sqlparse==0.5.3
+uvicorn==0.34.3
+websockets==15.0.1
