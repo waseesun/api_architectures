@@ -149,4 +149,34 @@ export class ApiClient {
   async delete(endpoint, data = null, additionalOptions = {}) {
     return await this.request(endpoint, "DELETE", data, additionalOptions);
   }
+
+  stream(endpoint, onMessageCallback, onErrorCallback, onOpenCallback) {
+    const url = `${this.baseURL}${endpoint}`;
+    console.log(`Opening SSE connection to: ${url}`);
+    const eventSource = new EventSource(url);
+
+    eventSource.onmessage = (event) => {
+      console.log("Raw SSE event received:", event.data);
+      try {
+        const data = JSON.parse(event.data);
+        console.log("Parsed SSE message:", data);
+        onMessageCallback(data);
+      } catch (e) {
+        console.error("Error parsing SSE message:", e);
+        if (onErrorCallback) onErrorCallback(e);
+      }
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("EventSource error for URL:", url, error);
+      if (onErrorCallback) onErrorCallback(error);
+    };
+
+    eventSource.onopen = () => {
+      console.log("EventSource connection opened for URL:", url);
+      if (onOpenCallback) onOpenCallback();
+    };
+
+    return eventSource;
+  }
 }

@@ -32,3 +32,8 @@ export const pollMessage = async (client_id, polling_type) => {
   const queryParams = new URLSearchParams({ client_id, polling_type }).toString();
   return await realTimeApiClient.get(`/poll-messages/?${queryParams}`);
 }
+
+export const streamMessages = (client_id, onMessageCallback, onErrorCallback, onOpenCallback) => {
+  const queryParams = new URLSearchParams({ client_id }).toString()
+  return realTimeApiClient.stream(`/sse-messages/?${queryParams}`, onMessageCallback, onErrorCallback, onOpenCallback)
+}
