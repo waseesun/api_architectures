@@ -7,7 +7,7 @@ from .serializers import MessageSerializer
 
 logger = logging.getLogger(__name__)
 
-class MessageConsumer(AsyncJsonWebsocketConsumer):
+class WebSocketMessageConsumer(AsyncJsonWebsocketConsumer):
     """WebSocket consumer for handling global real-time messaging."""
     
     async def connect(self):
