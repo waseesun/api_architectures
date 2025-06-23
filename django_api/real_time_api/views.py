@@ -99,6 +99,7 @@ class SSEMessagesView(AdrfAPIView):
     renderer_classes = [SSERenderer]
     
     async def get(self, request):
+        # No wrapping needed because it is fast enough
         client_id = request.query_params.get('client_id')
 
         if not client_id:
@@ -109,6 +110,7 @@ class SSEMessagesView(AdrfAPIView):
 
         # Use sync_to_async for synchronous ORM operations
         try:
+            # sync object wrapped into async function and then arguments are passed
             client = await sync_to_async(Client.objects.get)(client_id=client_id)
         except Client.DoesNotExist:
             client = await sync_to_async(Client.objects.create)(client_id=client_id)
