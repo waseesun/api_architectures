@@ -179,4 +179,55 @@ export class ApiClient {
 
     return eventSource;
   }
+
+  connectWebSocket(endpoint, onMessageCallback, onCloseCallback, onErrorCallback) {
+    // Determine WebSocket protocol based on current page protocol
+    const wsProtocol = window.location.protocol === "https:" ? "wss://" : "ws://"
+    // Replace http/https part of baseURL with ws/wss
+    const wsBaseURL = this.baseURL.replace(/^(http|https):\/\//, wsProtocol)
+    const url = `${wsBaseURL}${endpoint}`
+
+    const ws = new WebSocket(url)
+
+    ws.onopen = () => {
+      console.log("WebSocket connection opened.")
+    }
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data)
+        onMessageCallback(data)
+      } catch (e) {
+        console.error("Error parsing WebSocket message:", e)
+      }
+    }
+
+    ws.onclose = (event) => {
+      console.log("WebSocket connection closed:", event.code, event.reason)
+      if (onCloseCallback) {
+        onCloseCallback(event)
+      }
+    }
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error)
+      if (onErrorCallback) {
+        onErrorCallback(error)
+      }
+    }
+
+    return {
+      ws,
+      sendJson: (data) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify(data))
+        } else {
+          console.warn("WebSocket is not open. Message not sent:", data)
+        }
+      },
+      close: () => {
+        ws.close()
+      },
+    }
+  }
 }

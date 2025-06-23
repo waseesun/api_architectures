@@ -87,10 +87,11 @@ export default function SSEChatPage() {
       <h1>SSE Chat</h1>
       <div className="messages-list">
         {messages.length === 0 && <p className="no-messages">No messages yet. Start chatting!</p>}
+        {console.log("Messages in sse frontend:", messages)}
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`message-bubble ${msg.client?.client_id === clientId ? "my-message" : "other-message"}`}
+            className={`message-bubble ${msg.client_id === clientId ? "my-message" : "other-message"}`}
           >
             <p className="message-content">{msg.content}</p>
             <span className="message-timestamp">{new Date(msg.timestamp).toLocaleTimeString()}</span>
