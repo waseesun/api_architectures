@@ -1,4 +1,5 @@
 from rest_framework.renderers import JSONRenderer
+from rest_framework.renderers import BaseRenderer
 
 
 class ViewRenderer(JSONRenderer):
@@ -25,3 +26,11 @@ class ViewRenderer(JSONRenderer):
                 data = {"errors": data}
 
         return super().render(data, accepted_media_type, renderer_context)
+
+
+class SSERenderer(BaseRenderer):
+    media_type = 'text/event-stream'
+    format = 'sse'
+
+    def render(self, data, accepted_media_type=None, renderer_context=None):
+        return data

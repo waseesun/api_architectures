@@ -1,4 +1,6 @@
+adrf==0.1.9
 asgiref==3.8.1
+async-property==0.2.2
 channels==4.2.2
 channels_redis==4.2.1
 click==8.2.1

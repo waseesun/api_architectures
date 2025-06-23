@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "channels",
     "uvicorn",
     "rest_framework",
+    "adrf",
     "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
