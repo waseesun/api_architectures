@@ -98,6 +98,9 @@ pip-log.txt
 pip-delete-this-directory.txt
 requirements.txt.bak
 
+static*/
+media/
+
 # PHP / Laravel
 vendor/
 .env

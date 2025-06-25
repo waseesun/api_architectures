@@ -16,6 +16,8 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include, re_path
 from real_time_api import ws_consumer
 
@@ -24,7 +26,8 @@ urlpatterns = [
     path("django-rest-api/", include("rest_api.urls")),
     path("django-webhooks/", include("webhooks.urls")),
     path("django-real-time-api/", include("real_time_api.urls")),
-]
+    path("django-graphql-api/", include("graphql_api.urls")),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 websocket_urlpatterns = [
     re_path(r'ws/messages/(?P<client_id>[0-9a-f-]+)/$', ws_consumer.WebSocketMessageConsumer.as_asgi()),
