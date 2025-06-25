@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "uvicorn",
     "rest_framework",
     "adrf",
+    "graphene_django",
     "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -168,4 +169,8 @@ CHANNEL_LAYERS = {
             "hosts": [('127.0.0.1', 6379)],
         },
     },
+}
+
+GRAPHENE = {
+    "SCHEMA": "graphql_api.schema.schema",
 }
