@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     "rest_api",
     "webhooks",
     "real_time_api",
+    "graphql_api",
     "channels",
     "uvicorn",
     "rest_framework",
     "adrf",
+    "graphene_django",
     "corsheaders",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -136,6 +138,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATIC_ROOT = BASE_DIR / "static"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -168,4 +172,8 @@ CHANNEL_LAYERS = {
             "hosts": [('127.0.0.1', 6379)],
         },
     },
+}
+
+GRAPHENE = {
+    "SCHEMA": "graphql_api.schema.schema",
 }
