@@ -1,6 +1,9 @@
 import graphene
+from graphene import relay
 from graphene_django import DjangoObjectType
+from graphene_django.filter import DjangoFilterConnectionField
 from .models import User, Character, Location, Episode # Import new models
+from .filters import UserFilter, CharacterFilter, LocationFilter, EpisodeFilter
 
 # --- DjangoObjectTypes for our models ---
 
@@ -8,38 +11,43 @@ class UserType(DjangoObjectType):
     class Meta:
         model = User
         fields = ("id", "name", "email")
+        interfaces = (relay.Node,)
 
 class LocationType(DjangoObjectType):
     class Meta:
         model = Location
         fields = ("id", "name", "type", "dimension", "created")
+        interfaces = (relay.Node,)
 class EpisodeType(DjangoObjectType):
     class Meta:
         model = Episode
         fields = "__all__" # Expose all fields from the Episode model
+        interfaces = (relay.Node,)
 
 class CharacterType(DjangoObjectType):
     class Meta:
         model = Character
         fields = "__all__" # Expose all fields from the Character model
+        interfaces = (relay.Node,)
 
 # --- Query Class (for reading data) ---
 
 class Query(graphene.ObjectType):
     # User Queries (already existing)
-    all_users = graphene.List(UserType)
+    # all_users = graphene.List(UserType)
+    all_users = DjangoFilterConnectionField(UserType, filterset_class=UserFilter)
     get_user = graphene.Field(UserType, id=graphene.ID())
 
     # Character Queries
-    all_characters = graphene.List(CharacterType)
+    all_characters = DjangoFilterConnectionField(CharacterType, filterset_class=CharacterFilter)
     character = graphene.Field(CharacterType, id=graphene.ID())
 
     # Location Queries
-    all_locations = graphene.List(LocationType)
+    all_locations = DjangoFilterConnectionField(LocationType, filterset_class=LocationFilter)
     location = graphene.Field(LocationType, id=graphene.ID())
 
     # Episode Queries
-    all_episodes = graphene.List(EpisodeType)
+    all_episodes = DjangoFilterConnectionField(EpisodeType, filterset_class=EpisodeFilter)
     episode = graphene.Field(EpisodeType, id=graphene.ID())
 
     # --- Resolver Methods ---

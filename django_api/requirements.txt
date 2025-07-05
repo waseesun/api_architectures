@@ -6,6 +6,7 @@ channels_redis==4.2.1
 click==8.2.1
 Django==5.2.3
 django-cors-headers==4.7.0
+django-filter==25.1
 djangorestframework==3.16.0
 graphene==3.4.3
 graphene-django==3.2.3
