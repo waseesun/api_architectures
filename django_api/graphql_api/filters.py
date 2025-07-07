@@ -34,6 +34,6 @@ class EpisodeFilter(django_filters.FilterSet):
         model = Episode
         fields = {
             "name": ["exact", "icontains"],
-            "episode": ["exact", "icontains"],
+            "episode_code": ["exact"],
             "air_date": ["exact", "icontains"],
         }

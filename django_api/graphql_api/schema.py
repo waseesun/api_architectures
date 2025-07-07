@@ -90,67 +90,67 @@ class Query(graphene.ObjectType):
 
 # # --- Mutation Classes (for changing data) ---
 
-# # 5.1 Create Character Mutation
-# class CreateCharacter(graphene.Mutation):
-#     # This class defines the arguments (input) that the mutation accepts
-#     class Arguments:
-#         name = graphene.String(required=True)
-#         species = graphene.String(required=True)
-#         status = graphene.String() # Not required
-#         type = graphene.String()   # Not required, matches model's 'type' field
-#         gender = graphene.String() # Not required
-#         imageUrl = graphene.String() # Matches Django's image_url field
+# 5.1 Create Character Mutation
+class CreateCharacter(graphene.Mutation):
+    # This class defines the arguments (input) that the mutation accepts
+    class Arguments:
+        name = graphene.String(required=True)
+        species = graphene.String(required=True)
+        status = graphene.String() # Not required
+        type = graphene.String()   # Not required, matches model's 'type' field
+        gender = graphene.String() # Not required
+        imageUrl = graphene.String() # Matches Django's image_url field
 
-#         # For ForeignKey relationships, we typically pass the ID of the related object
-#         # Make them optional (nullable) by default if not specified as required=True
-#         origin_id = graphene.ID()
-#         location_id = graphene.ID()
+        # For ForeignKey relationships, we typically pass the ID of the related object
+        # Make them optional (nullable) by default if not specified as required=True
+        origin_id = graphene.ID()
+        location_id = graphene.ID()
 
-#         # For ManyToMany relationships, we pass a list of IDs
-#         episode_ids = graphene.List(graphene.ID)
+        # For ManyToMany relationships, we pass a list of IDs
+        episode_ids = graphene.List(graphene.ID)
 
-#     # This defines the data that the mutation will return (the payload)
-#     character = graphene.Field(CharacterType)
+    # This defines the data that the mutation will return (the payload)
+    character = graphene.Field(CharacterType)
 
-#     # The actual logic to perform the mutation
-#     @staticmethod
-#     def mutate(root, info, name, species, status=None, type=None, gender=None, imageUrl=None,
-#                origin_id=None, location_id=None, episode_ids=None):
+    # The actual logic to perform the mutation
+    @staticmethod
+    def mutate(root, info, name, species, status=None, type=None, gender=None, imageUrl=None,
+               origin_id=None, location_id=None, episode_ids=None):
         
-#         # Fetch related Location objects if IDs are provided
-#         origin_instance = None
-#         if origin_id:
-#             try:
-#                 origin_instance = Location.objects.get(id=origin_id)
-#             except Location.DoesNotExist:
-#                 raise Exception(f"Origin Location with ID {origin_id} not found.")
+        # Fetch related Location objects if IDs are provided
+        origin_instance = None
+        if origin_id:
+            try:
+                origin_instance = Location.objects.get(id=origin_id)
+            except Location.DoesNotExist:
+                raise Exception(f"Origin Location with ID {origin_id} not found.")
 
-#         location_instance = None
-#         if location_id:
-#             try:
-#                 location_instance = Location.objects.get(id=location_id)
-#             except Location.DoesNotExist:
-#                 raise Exception(f"Location with ID {location_id} not found.")
+        location_instance = None
+        if location_id:
+            try:
+                location_instance = Location.objects.get(id=location_id)
+            except Location.DoesNotExist:
+                raise Exception(f"Location with ID {location_id} not found.")
 
-#         # Create the character instance
-#         character = Character.objects.create(
-#             name=name,
-#             species=species,
-#             status=status,
-#             type=type,
-#             gender=gender,
-#             image_url=imageUrl, # Django model field is snake_case
-#             origin=origin_instance,
-#             location=location_instance
-#         )
+        # Create the character instance
+        character = Character.objects.create(
+            name=name,
+            species=species,
+            status=status,
+            type=type,
+            gender=gender,
+            image_url=imageUrl, # Django model field is snake_case
+            origin=origin_instance,
+            location=location_instance
+        )
 
-#         # Handle ManyToMany relationship for episodes
-#         if episode_ids:
-#             episodes = Episode.objects.filter(id__in=episode_ids)
-#             character.episodes.set(episodes) # .set() method handles adding multiple related objects
+        # Handle ManyToMany relationship for episodes
+        if episode_ids:
+            episodes = Episode.objects.filter(id__in=episode_ids)
+            character.episodes.set(episodes) # .set() method handles adding multiple related objects
 
-#         # Return the mutation instance with the created character
-#         return CreateCharacter(character=character)
+        # Return the mutation instance with the created character
+        return CreateCharacter(character=character)
 
 
 # # 5.2 Update Character Mutation
@@ -238,11 +238,11 @@ class Query(graphene.ObjectType):
 #             return DeleteCharacter(success=False, deleted_id=id) # Indicate failure if not found
 
 
-# # --- Main Mutation Class (combines all mutations) ---
-# class Mutation(graphene.ObjectType):
-#     create_character = CreateCharacter.Field() # automatic transformation from snake to camel case
-#     update_character = UpdateCharacter.Field()
-#     delete_character = DeleteCharacter.Field()
+# --- Main Mutation Class (combines all mutations) ---
+class Mutation(graphene.ObjectType):
+    create_character = CreateCharacter.Field() # automatic transformation from snake to camel case
+    # update_character = UpdateCharacter.Field()
+    # delete_character = DeleteCharacter.Field()
 
-# # --- Define the Schema with both Query and Mutation ---
-# schema = graphene.Schema(query=Query, mutation=Mutation)
+# --- Define the Schema with both Query and Mutation ---
+schema = graphene.Schema(query=Query, mutation=Mutation)
