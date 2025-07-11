@@ -1,4 +1,4 @@
-# populate_data.py
+# seeders.py
 
 import os
 import django
