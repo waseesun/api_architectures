@@ -2,60 +2,70 @@ import graphene
 from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
-from .models import User, Character, Location, Episode # Import new models
+from .models import User, Character, Location, Episode
 from .filters import UserFilter, CharacterFilter, LocationFilter, EpisodeFilter
+
 
 # --- DjangoObjectTypes for our models ---
 
-class UserType(DjangoObjectType):
+class UserNode(DjangoObjectType):
     class Meta:
         model = User
         fields = ("id", "name", "email")
-        interfaces = (relay.Node,)
+        # interfaces = (relay.Node,)
 
-class LocationType(DjangoObjectType):
+class LocationNode(DjangoObjectType):
     class Meta:
         model = Location
         fields = ("id", "name", "type", "dimension", "created")
-        interfaces = (relay.Node,)
-class EpisodeType(DjangoObjectType):
+        # interfaces = (relay.Node,)
+class EpisodeNode(DjangoObjectType):
     class Meta:
         model = Episode
         fields = "__all__" # Expose all fields from the Episode model
-        interfaces = (relay.Node,)
+        # interfaces = (relay.Node,)
 
-class CharacterType(DjangoObjectType):
+class CharacterNode(DjangoObjectType):
     class Meta:
         model = Character
         fields = "__all__" # Expose all fields from the Character model
-        interfaces = (relay.Node,)
+        # interfaces = (relay.Node,)
 
 # --- Query Class (for reading data) ---
 
 class Query(graphene.ObjectType):
     # User Queries (already existing)
-    # all_users = graphene.List(UserType)
-    all_users = DjangoFilterConnectionField(UserType, filterset_class=UserFilter)
-    get_user = graphene.Field(UserType, id=graphene.ID())
+    all_users = graphene.List(UserNode)
+    # all_users = DjangoFilterConnectionField(
+    #     UserNode, 
+    #     filterset_class=UserFilter
+    # )
+    user = graphene.Field(
+        UserNode, 
+        id=graphene.ID()
+    ) # singular user
 
     # Character Queries
-    all_characters = DjangoFilterConnectionField(CharacterType, filterset_class=CharacterFilter)
-    character = graphene.Field(CharacterType, id=graphene.ID())
+    all_characters = graphene.List(CharacterNode)
+    # all_characters = DjangoFilterConnectionField(CharacterNode, filterset_class=CharacterFilter)
+    character = graphene.Field(CharacterNode, id=graphene.ID())
 
     # Location Queries
-    all_locations = DjangoFilterConnectionField(LocationType, filterset_class=LocationFilter)
-    location = graphene.Field(LocationType, id=graphene.ID())
+    all_locations = graphene.List(LocationNode)
+    # all_locations = DjangoFilterConnectionField(LocationNode, filterset_class=LocationFilter)
+    location = graphene.Field(LocationNode, id=graphene.ID())
 
     # Episode Queries
-    all_episodes = DjangoFilterConnectionField(EpisodeType, filterset_class=EpisodeFilter)
-    episode = graphene.Field(EpisodeType, id=graphene.ID())
+    all_episodes = graphene.List(EpisodeNode)
+    # all_episodes = DjangoFilterConnectionField(EpisodeNode, filterset_class=EpisodeFilter)
+    episode = graphene.Field(EpisodeNode, id=graphene.ID())
 
     # --- Resolver Methods ---
 
     def resolve_all_users(root, info, **kwargs):
         return User.objects.all()
 
-    def resolve_get_user(root, info, id):
+    def resolve_user(root, info, id):
         try:
             return User.objects.get(id=id)
         except User.DoesNotExist:
@@ -110,7 +120,7 @@ class CreateCharacter(graphene.Mutation):
         episode_ids = graphene.List(graphene.ID)
 
     # This defines the data that the mutation will return (the payload)
-    character = graphene.Field(CharacterType)
+    character = graphene.Field(CharacterNode)
 
     # The actual logic to perform the mutation
     @staticmethod
@@ -168,7 +178,7 @@ class CreateCharacter(graphene.Mutation):
 #         location_id = graphene.ID()
 #         episode_ids = graphene.List(graphene.ID) # Replace all existing episodes
 
-#     character = graphene.Field(CharacterType)
+#     character = graphene.Field(CharacterNode)
 
 #     @staticmethod
 #     def mutate(root, info, id, **kwargs): # kwargs will contain all other arguments
@@ -245,4 +255,5 @@ class Mutation(graphene.ObjectType):
     # delete_character = DeleteCharacter.Field()
 
 # --- Define the Schema with both Query and Mutation ---
-schema = graphene.Schema(query=Query, mutation=Mutation)
+# schema = graphene.Schema(query=Query, mutation=Mutation)
+schema = graphene.Schema(query=Query)
